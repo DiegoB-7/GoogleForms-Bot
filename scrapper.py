@@ -3,11 +3,26 @@ from bs4 import BeautifulSoup
 import re
 from models import Option
 
+
 def get_questions_answers(url:str):
+    """
+    Fetches questions and answers from a given URL.
+
+    Args:
+        url (str): The URL to fetch HTML from.
+
+    Returns:
+        list: A list of Option objects containing the question, answers, and sentinel names.
+
+    Raises:
+        None
+
+    """
+    
     # URL to fetch HTML from
     result = []
     
-    url = "https://docs.google.com/forms/d/e/1FAIpQLSdJBgTUrrbzDfj1nI1NDVcue_mOA6dYua1yf0gTyxVbEoslbQ/viewform" 
+    
     # Define custom headers with user-agent
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
@@ -39,7 +54,7 @@ def get_questions_answers(url:str):
                 answer = answer_div.find('span').text.strip()
                 answers.append(answer)
             
-            data = Option(question, answers, sentinel_names[0])
+            data = Option(question, answers, sentinel_names[0].split('_')[0])
             result.append(data)
             
         return result
